@@ -10,9 +10,13 @@ Represents a person using Stays.
 Fields:
 - id
 - email
+- emailVerified
 - displayName
+- avatarUrl
 - homeLocation
+- visibleToPublic
 - createdAt
+- updatedAt
 
 ### UserCredential
 Authentication data for a user. Passwords must never be stored in plain text.
@@ -25,6 +29,18 @@ Fields:
 - passwordUpdatedAt
 - failedLoginCount
 - lockedUntil
+- createdAt
+- updatedAt
+
+### EmailVerification
+Used to verify user email address
+
+Fields:
+- userId
+- verificationTokenHash
+- expiresAt
+- createdAt
+- updatedAt
 
 ### Family
 Represents a household or shared group that users can belong to.
@@ -33,7 +49,9 @@ Fields:
 - id
 - name
 - createdByUserId
+- visibleToPublic
 - createdAt
+- updatedAt
 
 ### FamilyMember
 Join entity representing a user's membership within a family.
@@ -44,6 +62,8 @@ Fields:
 - role (owner, adult, member, child)
 - joinedAt
 - status (active, invited, removed)
+- createdAt
+- updatedAt
 
 ### Place
 Represents a physical location where a user stayed or visited.
@@ -56,6 +76,8 @@ Fields:
 - latitude
 - longitude
 - externalProviderRef
+- createdAt
+- updatedAt
 
 ### Visit
 Primary aggregate root representing a user memory at a place and time.
@@ -81,6 +103,7 @@ Fields:
 - authorUserId
 - content
 - createdAt
+- updatedAt
 
 ### Photo
 Media content attached to a visit.
@@ -94,6 +117,8 @@ Fields:
 - latitude
 - longitude
 - caption
+- createdAt
+- updatedAt
 
 ### Tag
 User-defined label for organizing visits.
@@ -103,6 +128,8 @@ Fields:
 - userId
 - name
 - color
+- createdAt
+- updatedAt
 
 ### VisitTag
 Join entity linking visits and tags.
@@ -110,8 +137,49 @@ Join entity linking visits and tags.
 Fields:
 - visitId
 - tagId
+- createdAt
+- updatedAt
 
 ## Planned Entities (Phase 2)
+
+### AuthIdentity
+External auth methods (facebook, google, linkedin, twitter, etc)
+
+Fields:
+- id
+- userId
+- provider
+- providerUserId
+- lastLoginAt
+- createdAt
+- updatedAt
+
+### AuthToken
+External auth provider tokens for access and refresh
+
+Fields:
+- id
+- authIdentityId
+- accessTokenEncrypted
+- refreshTokenEncrypted
+- tokenExpiresAt
+- scopes
+- createdAt
+- updatedAt
+
+### Session
+Represents Web + Mobile refresh token
+
+Fields:
+- id
+- userId
+- refreshTokenHash
+- deviceId
+- platform
+- expiresAt
+- revokedAt
+- createdAt
+- updatedAt
 
 ### Trip
 Groups multiple visits into a single journey.
@@ -123,6 +191,8 @@ Fields:
 - startDate
 - endDate
 - coverPhotoId
+- createdAt
+- updatedAt
 
 ### TripVisit
 Ordered join entity between trips and visits.
@@ -130,8 +200,11 @@ Ordered join entity between trips and visits.
 Fields:
 - tripId
 - visitId
-- dayNumber
+- startDate
+- endDate
 - sortOrder
+- createdAt
+- updatedAt
 
 ## Relationships
 
@@ -290,5 +363,45 @@ erDiagram
 		guid visitId
 		int dayNumber
 		int sortOrder
+	}
+```
+
+```mermaid
+erDiagram
+	USER ||--o{ AUTH_IDENTITY : has
+	AUTH_IDENTITY ||--o{ AUTH_TOKEN : issues
+	USER ||--o{ SESSION : has
+
+	AUTH_IDENTITY {
+		guid id
+		guid userId
+		string provider
+		string providerUserId
+		datetime lastLoginAt
+		datetime createdAt
+		datetime updatedAt
+	}
+
+	AUTH_TOKEN {
+		guid id
+		guid authIdentityId
+		string accessTokenEncrypted
+		string refreshTokenEncrypted
+		datetime tokenExpiresAt
+		string scopes
+		datetime createdAt
+		datetime updatedAt
+	}
+
+	SESSION {
+		guid id
+		guid userId
+		string refreshTokenHash
+		string deviceId
+		string platform
+		datetime expiresAt
+		datetime revokedAt
+		datetime createdAt
+		datetime updatedAt
 	}
 ```
