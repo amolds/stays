@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/data/">
+    <Project Path="data/Stays.Persistence/Stays.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/domain/">
+    <Project Path="domain/Stays.Domain/Stays.Domain.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Stays.DbMigrator/Stays.DbMigrator.csproj" />
+  </Folder>
+</Solution>
