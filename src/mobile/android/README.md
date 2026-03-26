@@ -1,0 +1,1 @@
+stays-android/ (Kotlin Android app module; use Gradle)
