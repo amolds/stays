@@ -1,6 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-using Stays.Domain;
+using Stays.Domain.Models;
 
 public class StaysDbContext : DbContext
 {
@@ -9,6 +9,7 @@ public class StaysDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Family> Families { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

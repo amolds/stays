@@ -12,3 +12,8 @@ dotnet ef migrations add InitialCreate \
 
 ## Running migrations
 dotnet run --project tools/Stays.DbMigrator
+or dotnet ef database update
+
+dotnet ef database update --project data/Stays.Persistence/Stays.Persistence.csproj --startup-project tools/Stays.DbMigrator/Stays.DbMigrator.csproj
+
+dotnet run --project tools/Stays.DbMigrator/Stays.DbMigrator.csproj
