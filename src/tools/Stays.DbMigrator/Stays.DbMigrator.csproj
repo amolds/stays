@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\data\Stays.Persistence\Stays.Persistence.csproj" />
+    <ProjectReference Include="..\..\libs\Stays.Security\Stays.Security.csproj" />
   </ItemGroup>
 
   <ItemGroup>
