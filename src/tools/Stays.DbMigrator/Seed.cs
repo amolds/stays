@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Stays.Domain.Models;
+using Stays.Security;
 
 public static class Seed
 {
@@ -120,7 +121,7 @@ public static class Seed
 
     private static async Task<User> CreateOrGetUser(StaysDbContext dbContext, string email, string displayName, string avatarUrl, string homeLocation, bool visibleToPublic)
     {
-        var existing = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var existing = await dbContext.Users.Include(u => u.Credential).FirstOrDefaultAsync(u => u.Email == email);
         if (existing != null)
         {
             return existing;
@@ -135,8 +136,13 @@ public static class Seed
             HomeLocation = homeLocation,
             VisibleToPublic = visibleToPublic
         };
-
+        
         dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync();
+
+        // Create credential after user is saved to the database
+        var userCredential = await CreateCredentialAsync(dbContext, user, $"{email}Password123!");
+        user.Credential = userCredential;
         await dbContext.SaveChangesAsync();
 
         return user;
@@ -246,5 +252,24 @@ public static class Seed
         await dbContext.SaveChangesAsync();
 
         return tag;
+    }
+
+    private static async Task<UserCredential> CreateCredentialAsync(StaysDbContext dbContext, User user, string password)
+    {
+        var passwordHash = PasswordHasher.HashPassword(password, out var salt);
+        
+        var credential = new UserCredential
+        {
+            UserId = user.Id,
+            PasswordHash = passwordHash,
+            PasswordSalt = salt,
+            PasswordAlgorithm = "PBKDF2-SHA256",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            FailedLoginCount = 0
+        };
+        dbContext.UserCredentials.Add(credential);
+
+        return credential;
     }
 }

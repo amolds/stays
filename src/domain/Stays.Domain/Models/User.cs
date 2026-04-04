@@ -35,4 +35,6 @@ public class User
     public ICollection<EmailVerification> EmailVerifications { get; set; } = new List<EmailVerification>();
 
     public ICollection<Trip> CreatedTrips { get; set; } = new List<Trip>();
+
+    public UserCredential? Credential { get; set; }
 }
