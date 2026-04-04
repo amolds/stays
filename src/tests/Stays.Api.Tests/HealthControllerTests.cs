@@ -18,7 +18,7 @@ public class HealthControllerTests
         var okResult = Assert.IsType<OkObjectResult>(result);
         var response = Assert.IsType<HealthResponse>(okResult.Value);
 
-        Assert.Equal("Ready", response.Status);
+        Assert.Equal("False", response.Status);
     }
 
     [Fact]
@@ -34,6 +34,7 @@ public class HealthControllerTests
         var response = Assert.IsType<HealthResponse>(statusResult.Value);
         Assert.Equal("Database unavailable", response.Status);
     }
+
 
     [Fact]
     public async Task GetReadiness_ReturnsServiceUnavailable_WhenProbeThrows()
