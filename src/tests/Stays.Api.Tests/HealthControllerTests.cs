@@ -35,6 +35,7 @@ public class HealthControllerTests
         Assert.Equal("Database unavailable", response.Status);
     }
 
+
     [Fact]
     public async Task GetReadiness_ReturnsServiceUnavailable_WhenProbeThrows()
     {
