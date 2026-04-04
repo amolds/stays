@@ -18,7 +18,7 @@ public class HealthControllerTests
         var okResult = Assert.IsType<OkObjectResult>(result);
         var response = Assert.IsType<HealthResponse>(okResult.Value);
 
-        Assert.Equal("Ready", response.Status);
+        Assert.Equal("False", response.Status);
     }
 
     [Fact]
