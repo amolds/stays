@@ -17,3 +17,6 @@ or dotnet ef database update
 dotnet ef database update --project data/Stays.Persistence/Stays.Persistence.csproj --startup-project tools/Stays.DbMigrator/Stays.DbMigrator.csproj
 
 dotnet run --project tools/Stays.DbMigrator/Stays.DbMigrator.csproj
+
+## Seeding data only (skip migration)
+dotnet run --project tools/Stays.DbMigrator --seed-only

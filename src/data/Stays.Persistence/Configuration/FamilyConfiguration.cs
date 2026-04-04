@@ -14,7 +14,7 @@ public class FamilyConfiguration : IEntityTypeConfiguration<Family>
             .HasDefaultValueSql("SYSUTCDATETIME()");
 
         builder.Property(f => f.UpdatedAt)
-            .ValueGeneratedOnAddOrUpdate()
+            .ValueGeneratedOnUpdate()
             .HasDefaultValueSql("SYSUTCDATETIME()");
 
         builder.HasIndex(f => f.Name)
@@ -23,7 +23,7 @@ public class FamilyConfiguration : IEntityTypeConfiguration<Family>
         builder.HasMany(f => f.FamilyMembers)
             .WithOne(u => u.Family)
             .HasForeignKey(u => u.FamilyId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
             
         builder.HasOne(f => f.CreatedByUser)
             .WithMany()

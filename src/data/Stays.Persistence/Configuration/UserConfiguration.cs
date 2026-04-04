@@ -15,7 +15,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasDefaultValueSql("SYSUTCDATETIME()");
 
         builder.Property(u => u.UpdatedAt)
-            .ValueGeneratedOnAddOrUpdate()
+            .ValueGeneratedOnUpdate()
             .HasDefaultValueSql("SYSUTCDATETIME()");
 
         builder.HasIndex(u => u.Email)

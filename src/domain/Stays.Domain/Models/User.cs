@@ -23,4 +23,16 @@ public class User
     public DateTime UpdatedAt { get; set; }
 
     public Family? Family { get; set; }
+
+    public ICollection<Visit> Visits { get; set; } = new List<Visit>();
+
+    public ICollection<Note> Notes { get; set; } = new List<Note>();
+
+    public ICollection<Photo> Photos { get; set; } = new List<Photo>();
+
+    public ICollection<Tag> Tags { get; set; } = new List<Tag>();
+
+    public ICollection<EmailVerification> EmailVerifications { get; set; } = new List<EmailVerification>();
+
+    public ICollection<Trip> CreatedTrips { get; set; } = new List<Trip>();
 }

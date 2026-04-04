@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Stays.Persistence.Migrations
 {
     [DbContext(typeof(StaysDbContext))]
-    partial class StaysDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260404220055_AddUserProperties")]
+    partial class AddUserProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -388,22 +391,6 @@ namespace Stays.Persistence.Migrations
                     b.ToTable("Visits");
                 });
 
-            modelBuilder.Entity("TripTag", b =>
-                {
-                    b.Property<Guid>("TripId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("TripId", "TagId");
-
-                    b.HasIndex("TagId")
-                        .HasDatabaseName("IX_TripTags_TagId");
-
-                    b.ToTable("TripTag");
-                });
-
             modelBuilder.Entity("VisitPlace", b =>
                 {
                     b.Property<Guid>("VisitId")
@@ -544,21 +531,6 @@ namespace Stays.Persistence.Migrations
                     b.Navigation("Trip");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TripTag", b =>
-                {
-                    b.HasOne("Stays.Domain.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Stays.Domain.Models.Trip", null)
-                        .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("VisitPlace", b =>

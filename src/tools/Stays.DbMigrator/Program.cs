@@ -19,16 +19,26 @@ var provider = services.BuildServiceProvider();
 using (var scope = provider.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<StaysDbContext>();
-    await Seed.Reset(dbContext);
-
-    Console.WriteLine("Migration completed successfully.");
+    
+    // Check if --seed-only argument is provided
+    var seedOnly = args.Contains("--seed-only");
+    
+    if (!seedOnly)
+    {
+        await Seed.Reset(dbContext);
+        Console.WriteLine("Migration completed successfully.");
+    }
+    else
+    {
+        Console.WriteLine("Skipping migration, seeding existing database...");
+    }
 
     await Seed.SeedData(dbContext);
     Console.WriteLine("Data seeded successfully.");
 
     var lonely = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == "jon.lonely@outlook.com");
     Console.WriteLine($"User: {lonely?.DisplayName}, Family: {lonely?.Family?.Name}");
-    
+
     var family = await dbContext.Families
         .Include(f => f.FamilyMembers)
         .FirstOrDefaultAsync();    
