@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Stays.Domain;
+using Stays.Domain.Models;
 
 namespace Stays.Persistence.Configuration;
 
@@ -15,7 +15,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasDefaultValueSql("SYSUTCDATETIME()");
 
         builder.Property(u => u.UpdatedAt)
-            .ValueGeneratedOnAddOrUpdate()
+            .ValueGeneratedOnUpdate()
             .HasDefaultValueSql("SYSUTCDATETIME()");
+
+        builder.HasIndex(u => u.Email)
+            .IsUnique()
+            .HasDatabaseName("IX_Users_Email");
     }
 }
